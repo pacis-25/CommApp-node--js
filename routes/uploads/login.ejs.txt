@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel='stylesheet' href='/stylesheets/login.css' />
+
+</head>
+
+
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form class="form-design" id="loginForm" method="post">
+      <div class="input">
+        <label for="email">Email </label>
+        <input type="text" name="email" placeholder="Enter Email" id="email">
+
+      </div>
+      <div class="email error" style="line-height: 3px; font-size:10px; color:red;"></div>
+
+      <div class="input">
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="Password" id="password">
+
+      </div>
+      <div class="password error" style="line-height: 3px; font-size:10px; color:red;"></div>
+
+      <input type="submit" value="Login">
+    </form>
+  </div>
+
+
+  <script src="/javascripts/login.js"></script>
+  <script>
+    const form = document.querySelector('form');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // reset errors
+      emailError.textContent = '';
+      passwordError.textContent = '';
+
+      // get values
+      const email = form.email.value;
+      const password = form.password.value;
+
+      try {
+        const res = await fetch('/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        console.log(data);
+        if (data.errors) {
+          // alert(data.errors.email);
+          // alert(data.errors.password);
+
+          emailError.textContent = data.errors.email;
+          passwordError.textContent = data.errors.password;
+        }
+        if (data.user) {
+          location.assign('login-success');
+        }
+
+      }
+      catch (err) {
+        console.log(err);
+      }
+    });
+  </script>
+</body>
+
+
+</html>

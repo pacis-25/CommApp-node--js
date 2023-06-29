@@ -12,11 +12,6 @@ function showConfirmBox(fileId, sharedID) {
 }
     
 
-
-function closeConfirmBox() {
-    document.getElementById("overlay").hidden = true;
-}
-
 function ThisConfirm() {
     
     closeConfirmBox();
